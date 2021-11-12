@@ -1,6 +1,7 @@
 ''' Tool for scraping data from Unsplash.com
 
 author: Anthony Hung Nguen
+modified by: Nathalie Descusse-Brown
 date_created: 14/2/2019
 '''
 
@@ -20,7 +21,7 @@ if __name__ == "__main__":
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "safebrowsing_for_trusted_sources_enabled": False,
-        "safebrowsing.enabled": False
+        "safebrowsing.enabled": False,
     })
     opts.add_argument('--disable-gpu')
     opts.add_argument('--disable-software-rasterizer')
@@ -36,10 +37,12 @@ if __name__ == "__main__":
             print('Please enter a number. Try again later')
         if choice == 1:
             query = input('Enter your search: ')
-            result_folder = "./images-" + query + \
-                "/" if len(query) > 1 else "./images/"
+            #Modified direction of slashes in below path to address download errors
+            result_folder = ".\\images-" + query + \
+                "/" if len(query) > 1 else ".\\images\\"
+            print(result_folder)    
             img_url = sp.extract_userinput(query)
-            prefs = {"download.default_directory": os.getcwd() + result_folder}
+            prefs = {'download.default_directory' : os.getcwd() + result_folder, "download.prompt_for_download": False}
             opts.add_experimental_option("prefs", prefs)
             browser = Chrome(options=opts)
             sp.extract_and_save_imgs(browser, img_url, scroll, result_folder)
