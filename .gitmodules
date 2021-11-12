@@ -1,0 +1,3 @@
+[submodule "unsplash-crawler"]
+	path = unsplash-crawler
+	url = https://github.com/allankouidri/Diversity
