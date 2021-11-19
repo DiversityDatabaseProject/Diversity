@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 17 11:07:09 2021
+
+@author: natha
+"""
+
 ''' Tool for scraping data from Unsplash.com
 
 author: Anthony Hung Nguen
@@ -5,6 +12,7 @@ date_created: 14/2/2019
 '''
 
 import time
+from selenium import webdriver
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 import urllib.request
@@ -13,28 +21,50 @@ import os
 
 
 def scroll_webpage(driver, times):
-    SCROLL_PAUSE_TIME = 1
+    # driver.get(url)
+    SCROLL_PAUSE_TIME = 5
     count = 0
+    # images=[]
+
+    # if 'collections/' in url:
+    #     load_more(browser)
+    #     time.sleep(5)
+    # print(scroll)
 
     # Get scroll height
-    last_height = driver.execute_script("return document.body.scrollHeight")
+    last_height = driver.execute_script("return window.pageYOffset")
+    print(last_height, times)
+    
 
     while count < times:
+        # compt=500 * count
         # Scroll down to bottom
-        driver.execute_script(
-            "window.scrollTo(0, document.body.scrollHeight);")
-
+        # driver.execute_script("return document.body.scrollHeight")
+        # button=
+        button = driver.find_element_by_xpath("//button[text()='Load more photos']")
+        # driver.findElement(By.className(".CwMIr.DQBsa.p1cWU.jpBZ0.AYOsT.Olora.I0aPD.dEcXu")).click()
+        # driver.find_element_by_class_name('.CwMIr.DQBsa.p1cWU.jpBZ0.AYOsT.Olora.I0aPD.dEcXu').click()
+        # driver.find_element_by_css_selector('.CwMIr.DQBsa.p1cWU.jpBZ0.AYOsT.Olora.I0aPD.dEcXu').click()
+        # driver.find_element_by_css_selector('.YdJ_E.XhUNI').click()
+        # button = driver.find_element_by_class_name(".CwMIr .DQBsa .p1cWU .jpBZ0 .AYOsT .Olora .I0aPD .dEcXu")
+        # button_element = driver.find_element_by_xpath("//input[@name='btnK']")
+        button.click()
         # Wait to load page
         time.sleep(SCROLL_PAUSE_TIME)
 
         # Calculate new scroll height and compare with last scroll height
         new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-        last_height = new_height
+        # print(last_height,new_height)
+        # if new_height == last_height:
+        #     break
+        # last_height = new_height
+        print(new_height,count)
+        #images.append(driver.find_elements_by_css_selector(css_selector))
 
         count += 1
-
+    #     print(count)
+    # print(images)
+    # return images
 
 def extract_userinput(query):
 
@@ -49,6 +79,7 @@ def extract_data(browser, url, scroll, css_selector):
     if 'collections/' in url:
         load_more(browser)
         time.sleep(5)
+    # print(scroll)
     scroll_webpage(browser, scroll)
     time.sleep(2)
     return browser.find_elements_by_css_selector(css_selector)
@@ -63,8 +94,7 @@ def extract_and_save_imgs(browser, img_url, scroll, result_folder):
     src = []
     for img in imgs:
         img_id = img.get_attribute('href').split('/')[-1]
-        src.append('https://unsplash.com/photos/' +
-                   img_id + '/download?force=true')
+        src.append('https://unsplash.com/photos/' + img_id + '/download?force=true')
     browser.get(src[0])
     for url in src[1:]:
         browser.execute_script('window.open("{}", "_blank");'.format(url))
