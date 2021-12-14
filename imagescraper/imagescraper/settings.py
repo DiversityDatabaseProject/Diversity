@@ -18,7 +18,7 @@ NEWSPIDER_MODULE = 'imagescraper.spiders'
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Desired file format
 FEED_FORMAT = "csv"
@@ -32,33 +32,37 @@ FEED_URI = "imagescraper.csv"
 ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
 
 #Enabling use of proxies with rotating_proxies tool:
-# ROTATING_PROXY_LIST = [
-#     '45.128.220.22:59394'
+#ROTATING_PROXY_LIST = [
+#    '167.179.4.142:55443'
 # ]
 
-# DOWNLOADER_MIDDLEWARES = {
-#     'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
-#     'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
-# }
+
+# The spider will use the proxies listed in the proxy-list to crawl the website.
+ROTATING_PROXY_LIST_PATH = 'proxy-list.txt'
+
+DOWNLOADER_MIDDLEWARES = {
+ 'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+ 'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+ }
 
 #Below is to be used with scrapy-proxies
-PROXY_LIST = 'proxy-list.txt'
-DOWNLOADER_MIDDLEWARES = { 
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
-    'scrapy_proxies.RandomProxy': 100, 
-    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110}
+#PROXY_LIST = 'proxy-list2.txt'
+#DOWNLOADER_MIDDLEWARES = { 
+#    'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
+#    'scrapy_proxies.RandomProxy': 100, 
+#    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110}
 
-RETRY_HTTP_CODES = [500, 503, 504, 400, 403, 404, 408]
+#RETRY_HTTP_CODES = [500, 503, 504, 400, 403, 404, 408]
 
 # Proxy mode
 # 0 = Every requests have different proxy
 # 1 = Take only one proxy from the list and assign it to every requests
 # 2 = Put a custom proxy to use in the settings
-PROXY_MODE = 0
+#PROXY_MODE = 0
 
-# Configure item pipelines
+# Configure item pipelines, this folder is where images will be saved locally
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-IMAGES_STORE = './imagescraper/spiders/images'
+IMAGES_STORE = './shutterstock_images'
 
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
