@@ -1,3 +1,7 @@
+#This script scrapes https://github.com/clarketm/proxy-list/blob/master/proxy-list.tx to get
+#up-to-date proxies
+#Needs to be run before spider
+
 import bs4, requests
 from bs4 import BeautifulSoup
 
