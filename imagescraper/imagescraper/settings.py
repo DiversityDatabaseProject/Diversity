@@ -18,13 +18,13 @@ NEWSPIDER_MODULE = 'imagescraper.spiders'
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
+ROBOTSTXT_OBEY = True
 
 # Desired file format
 FEED_FORMAT = "csv"
  
 # Name of the file where data extracted is stored
-FEED_URI = "imagescraper.csv"
+FEED_URI = "imagescraper_google.csv"
 
 
 # Configure item pipelines
@@ -62,7 +62,7 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines, this folder is where images will be saved locally
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-IMAGES_STORE = './shutterstock_images'
+IMAGES_STORE = './google_images'
 
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
