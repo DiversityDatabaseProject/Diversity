@@ -3,8 +3,8 @@
 # SP2 STORES URL AND DESCRIPTION IN SEPARATE CSV FILE
 import scrapy
 import urllib3
-from imagescraper.NEW_items import Myspd2spiderItem
-from imagescraper.NEW_items import Myspd1spiderItem
+from imagescraper.items import Myspd2spiderItem
+from imagescraper.items import Myspd1spiderItem
 from scrapy.crawler import CrawlerProcess
 from scrapy import Selector
 import json
@@ -40,9 +40,9 @@ class Myspd1Spider(scrapy.Spider):
         jsonlist = []
 
         concatjson = '{"foo":' + script + "}"
-        print(concatjson)   
+        #print(concatjson)   
         data = json.loads(concatjson)
-        print('type(data)',type(data))
+        #print('type(data)',type(data))
         for imagescraper in data["foo"]:
               images['image_urls'].append(imagescraper["url"])
 
@@ -52,7 +52,7 @@ class Myspd1Spider(scrapy.Spider):
         next_page_url = str(self.base_url) + '/search/photos+of+people+faces?page=' + str(self.i)
         print(self.i,'next_page_url',type(next_page_url))
         yield scrapy.Request(str(next_page_url), callback=self.parse) 
-        if self.i<2 :
+        if self.i<4981 :
             self.i=self.i+1;  
         else:
             pass
@@ -83,9 +83,15 @@ class Myspd2Spider(scrapy.Spider):
         images['image_description']=[] 
 
 
-        for imagescraper in response.xpath('//div/img'):
-            images['image_urls'].append(imagescraper.xpath('./@src').get())
-            images['image_description'].append(imagescraper.xpath('./@alt').get())
+        soup= BeautifulSoup(response.text,'html.parser')
+        script = soup.find_all('script')[4].text.strip()[0:]
+        jsonlist = []
+
+        concatjson = '{"foo":' + script + "}"
+        data = json.loads(concatjson)
+        for imagescraper in data["foo"]:
+              images['image_urls'].append(imagescraper["url"])
+              images['image_description'].append(imagescraper["description"])
 
         yield images
 
@@ -94,7 +100,7 @@ class Myspd2Spider(scrapy.Spider):
         next_page_url = str(self.base_url) + '/search/photos+of+people+faces?page=' + str(self.i)
         print(self.i,'next_page_url',type(next_page_url))
         yield scrapy.Request(str(next_page_url), callback=self.parse) 
-        if self.i<2 :
+        if self.i<4981 :
             self.i=self.i+1;  
         else:
             pass
