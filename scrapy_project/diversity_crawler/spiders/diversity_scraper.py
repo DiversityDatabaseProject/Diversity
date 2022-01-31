@@ -8,8 +8,7 @@ import os, time
 
 class DiversityScraperSpider(scrapy.Spider):
     name = 'diversity_scraper'
-    #allowed_domains = ['istockphoto.com']
-    allowed_domains = ['api.scraperapi.com']
+    allowed_domains = ['istockphoto.com']
     site = 'istockphoto'
     page_cnt=100
 
@@ -22,9 +21,10 @@ class DiversityScraperSpider(scrapy.Spider):
     }
     
     params = {
-            'ethnicity': 'southasian',
+            'ethnicity': 'nativeamericanfirstnations',
             'page': 1,
-            'phrase': 'people'
+            'phrase': 'people',
+            'ageofpeople':'teenager'
     }
     
     folder=time.strftime('%Y%m%d%H%M%S',time.localtime())
@@ -48,7 +48,7 @@ class DiversityScraperSpider(scrapy.Spider):
             item = DiversityCrawlerItem()
             item['folder'] = self.folder
             item['host'] =  self.name
-            item['search_key'] =  self.params['phrase']
+            item['search_key'] =  self.params['phrase'] +' '+ self.params['ageofpeople']
             item['ethnicity'] =  self.params['ethnicity']
             item['img_urls'] =  result['thumbUrl']
             item['filename'] =  self.site+'_'+result['id']
