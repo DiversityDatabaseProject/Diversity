@@ -1,3 +1,4 @@
 scrapy_project/diversity_crawler/__pycache__/
 scrapy_project/diversity_crawler/csv/
 scrapy_project/diversity_crawler/images/
+scrapy_project/diversity_crawler/spiders/__pycache__/
