@@ -1,5 +1,5 @@
 # scrapy_project
-The **scrapy project** folder contain spiders for **istockphoto** and **shutterstock**.<br/>
+The **scrapy project** folder contains spiders for **istockphoto** and **shutterstock**.<br/>
 It downloads images and saves metadata in csv files.<br/>
 The image metadata is composed of the following:
 - scraper host / site name
