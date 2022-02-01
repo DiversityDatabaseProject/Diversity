@@ -1,5 +1,6 @@
+
 # scrapy_project
-the scrapy project folder contain spiders for istockphoto and shutterstock
-it downloads images and saves metadata in csv files
-csv filenames and folder filenames contain the timestamp of the download
-there is also logging for istockphoto
+The scrapy project folder contain spiders for istockphoto and shutterstock.<br/>
+It downloads images and saves metadata in csv files.<br/>
+The csv filenames and folder filenames contain the timestamp of the download.<br/>
+There is also logging for istockphoto spider.<br/>
