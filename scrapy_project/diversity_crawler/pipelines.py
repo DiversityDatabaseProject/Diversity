@@ -36,20 +36,6 @@ class DataWriterPipeline(object):
         self.writer.writerow([item['host'],item['search_key'],item['filename'],item['img_urls'],item['ethnicity'],item['description'],item['img_type']])
         return item
 
-class LastPagePipeline(object):
-    writer=None
-    def __init__(self):
-        if os.path.isdir('data'):
-            pass
-        else:
-            os.makedirs('data')
-
-    def process_item(self, item, spider):
-        #if self.writer==None:
-        self.writer = csv.writer(open('data/next_page.csv', 'w'))
-        self.writer.writerow([item['last_page']])
-        return item
-
 class ImagesDownloadPipeline(ImagesPipeline):
 
     def item_completed(self, results, item, info):

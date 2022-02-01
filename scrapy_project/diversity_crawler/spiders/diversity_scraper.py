@@ -1,6 +1,6 @@
 import scrapy
-from scrapy.loader import ItemLoader
-from itemloaders.processors import MapCompose
+from scrapy.utils.log import configure_logging
+import logging
 import urllib
 from ..items import DiversityCrawlerItem
 import json
@@ -15,10 +15,20 @@ class DiversityScraperSpider(scrapy.Spider):
     custom_settings = {
         'CLOSESPIDER_PAGECOUNT ': 2,
         'ITEM_PIPELINES': {
-            'diversity_crawler.pipelines.DataWriterPipeline': 300,
-            'diversity_crawler.pipelines.LastPagePipeline': 301
-        }
+            'diversity_crawler.pipelines.DataWriterPipeline': 300
+        },
+        'LOG_STDOUT':True
     }
+
+    folder=time.strftime('%Y%m%d%H%M%S',time.localtime())
+    configure_logging(install_root_handler=False)
+
+    logging.basicConfig(
+        filename='logs/'+folder+'_log.txt',
+        format='%(asctime)s %(levelname)-8s %(message)s',
+        level=logging.INFO,
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
     
     params = {
             'ethnicity': 'nativeamericanfirstnations',
@@ -27,9 +37,6 @@ class DiversityScraperSpider(scrapy.Spider):
             'ageofpeople':'teenager'
     }
     
-    folder=time.strftime('%Y%m%d%H%M%S',time.localtime())
-    
-
     start_urls = []
     istockphoto_url = 'https://www.istockphoto.com/en/search/2/image?'
     
@@ -57,8 +64,4 @@ class DiversityScraperSpider(scrapy.Spider):
             item['last_page'] = self.params['page']
             if len(result['thumbUrl']) != 0:
                 urllib.request.urlretrieve(result['thumbUrl'], 'images/'+self.folder+'/'+item['filename']+'.jpg')
-            """ item = DiversityCrawlerItem()
-            item['host']=self.name
-            item['s']=self.key_word
-            item['src_link']=result['MediaUrl'] """
             yield item
