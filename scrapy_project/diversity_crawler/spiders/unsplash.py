@@ -28,7 +28,7 @@ class UnsplashSpider(scrapy.Spider):
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
-    params = {'query': 'people',
+    params = {'query': 'asian people',
 			'per_page': 20,
             'page': 1,
             'xp': 'search-multi-word'

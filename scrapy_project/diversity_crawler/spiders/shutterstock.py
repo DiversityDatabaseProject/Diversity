@@ -1,40 +1,56 @@
 import scrapy
-from scrapy.loader import ItemLoader
-from itemloaders.processors import MapCompose
+from scrapy.utils.log import configure_logging
 import urllib
 from ..items import DiversityCrawlerItem
 import json
 import os, time
-
+import logging
 
 class ShutterstockSpider(scrapy.Spider):
     name = 'shutterstock'
     allowed_domains = ['shutterstock.com']
     site = 'shutterstock'
-    page_cnt=3
+    page_cnt=500
+
+    configure_logging(install_root_handler=False)
+
+    logging.basicConfig(
+        filename='logs/unsplash_log.txt',
+        format='%(asctime)s %(levelname)-8s %(message)s',
+        level=logging.INFO,
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
 
     params = {'language': 'en',
 			'namespace': 'shutterstock',
-			'page[number]': 1,
+			'page[number]': 6,
 			'page[size]': 100,
 			'q': 'people',
 			'queryTranslations': 'true',
-			'filter[people_ethnicity]': 'african',
+			'filter[people_ethnicity]': 'east_asian',
 			'filter[image_type]': 'photo',
-			'filter[is_model_released]': 'true'
+			'filter[is_model_released]': 'true',
+            'sort': 'newest'
 		}
     
     folder=time.strftime('%Y%m%d%H%M%S',time.localtime())
     
-    start_urls = []
-    for i in range(0,params['page[size]']):
-        start_urls.append('https://www.shutterstock.com/napi/images/search?'+ urllib.parse.urlencode(params))
-        params['page[number]'] += 1
-
     def __init__(self):
         os.makedirs('images/'+self.folder)
 
+    start_urls = ['https://www.shutterstock.com/napi/images/search?'+ urllib.parse.urlencode(params)]
+
     def parse(self, response):
+        base_url = 'https://www.shutterstock.com/napi/images/search?'
+        data = json.loads(response.body)
+        page_cnt = data['meta']['pagination']['totalPages']
+        print("number of pages: ", page_cnt)
+        logging.info("number of pages: ", page_cnt)
+        for page in range(1, page_cnt):
+            self.params['page[number]'] = page
+            yield scrapy.Request(base_url + urllib.parse.urlencode(self.params), dont_filter=True, callback=self.parse_page)
+
+    def parse_page(self, response):
         response =json.loads(response.body)
         for result in response['data']:
             item = DiversityCrawlerItem()

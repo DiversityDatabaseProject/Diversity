@@ -33,24 +33,26 @@ class DiversityScraperSpider(scrapy.Spider):
     params = {
             'ethnicity': 'nativeamericanfirstnations',
             'page': 1,
-            'phrase': 'people',
-            'ageofpeople':'teenager'
+            'phrase': 'portrait'
     }
     
-    start_urls = []
-    istockphoto_url = 'https://www.istockphoto.com/en/search/2/image?'
-    
-    for i in range(0,page_cnt):
-        #start_urls.append('http://api.scraperapi.com?api_key=844b745e48cac6f2abae870dbd3a4f92&url=' + istockphoto_url + urllib.parse.urlencode(params) + '&keep_headers=true')
-        start_urls.append('https://www.istockphoto.com/en/search/2/image?' + urllib.parse.urlencode(params))
-        params['page'] += 1
+    start_urls = ['https://www.istockphoto.com/en/search/2/image?'+ urllib.parse.urlencode(params)]
 
     def __init__(self):
         os.makedirs('images/'+self.folder)
 
     def parse(self, response):
+        base_url = 'https://www.istockphoto.com/en/search/2/image?'
+        data = json.loads(response.body)
+        page_cnt = data['gallery']['lastPage']
+        print("number of pages: ", page_cnt)
+        logging.info("number of pages: ", page_cnt)
+        for page in range(1, page_cnt):
+            self.params['page'] = page
+            yield scrapy.Request(base_url + urllib.parse.urlencode(self.params), dont_filter=True, callback=self.parse_page)
+
+    def parse_page(self, response):
         response =json.loads(response.body)
-        self.page_cnt=response['gallery']['lastPage']
         for result in response['gallery']['assets']:
             item = DiversityCrawlerItem()
             item['folder'] = self.folder
