@@ -12,7 +12,7 @@ BOT_NAME = 'diversity'
 SPIDER_MODULES = ['diversity_crawler.spiders']
 NEWSPIDER_MODULE = 'diversity_crawler.spiders'
 
-CLOSESPIDER_PAGECOUNT = 3
+#CLOSESPIDER_PAGECOUNT = 3
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0'
