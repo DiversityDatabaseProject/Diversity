@@ -1,5 +1,7 @@
 # scrapy_project
-The **scrapy project** folder contains spiders for **istockphoto**, **unsplash** and **shutterstock**.<br/>
+The **scrapy project** folder contains one generic spider for **istockphoto**, **unsplash** and **shutterstock**.<br/>
+It takes data from json file for the URL, query parameters and results path.<br/>
+There is also a config file to get the value of which site to crawl.<br/>
 It downloads images and saves metadata in csv files.<br/>
 The spiders take only the **JSON response**, which contain only the data.<br/>
 Images are downloaded in the **image folder**, the metadata csv files in the **csv folder**, and logs in the **logs** folder.<br/>
