@@ -10,7 +10,8 @@
 		"params": {
 			"ethnicity": "eastasians",
 			"page": 1,
-			"phrase": "phrase"
+			"phrase": "phrase",
+			"sort": "newest"
 		},
 		"params_key": {
 			"ethnicity": "ethnicity",
@@ -34,7 +35,8 @@
 			"query": "portraits",
 			"per_page": 20,
 			"page": 1,
-			"xp": "search-multi-word"
+			"xp": "search-multi-word",
+			"order_by": "latest"
 		},
 		"params_key": {
 			"page": "page",
@@ -65,7 +67,8 @@
 			"queryTranslations": "true",
 			"filter[people_ethnicity]": "east_asian",
 			"filter[image_type]": "photo",
-			"filter[is_model_released]": "true"
+			"filter[is_model_released]": "true",
+			"sort": "newest"
 		},
 		"params_key": {
 			"ethnicity": "filter[people_ethnicity]",
