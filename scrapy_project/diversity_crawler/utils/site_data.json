@@ -1,0 +1,85 @@
+[
+	{
+		"allowed_domains": "istockphoto.com",
+		"site":"istockphoto",
+		"start_urls": "https://www.istockphoto.com/en/search/2/image?",
+		"page_cnt_1":"gallery",
+		"page_cnt_2":"lastPage",
+		"result_1":"gallery",
+		"result_2":"assets",
+		"params": {
+			"ethnicity": "eastasians",
+			"page": 1,
+			"phrase": "phrase"
+		},
+		"params_key": {
+			"ethnicity": "ethnicity",
+			"page": "page",
+			"search_key": "portrait"
+		},
+		"results": {
+			"img_urls": "thumbUrl",
+			"filename": "id",
+			"description": "altText",
+			"img_type": "mediaType"
+		}
+	},
+	{
+		"allowed_domains": "unsplash.com",
+		"site":"unsplash",
+		"start_urls": "https://unsplash.com/napi/search/photos?",
+		"page_cnt":"total_pages",
+		"result":"results",
+		"params": {
+			"query": "portraits",
+			"per_page": 20,
+			"page": 1,
+			"xp": "search-multi-word"
+		},
+		"params_key": {
+			"page": "page",
+			"search_key": "query"
+		},
+		"results": {
+			"img_urls_1": "urls",
+			"img_urls_2": "small",
+			"filename": "id",
+			"description": "alt_description",
+			"img_type": "NA"
+		}
+	},
+	{
+		"allowed_domains": "shutterstock.com",
+		"site":"shutterstock",
+		"start_urls": "https://www.shutterstock.com/napi/images/search?",
+		"page_cnt_1":"meta",
+		"page_cnt_2":"pagination",
+		"page_cnt_3":"totalPages",
+		"result":"data",
+		"params": {
+			"language": "en",
+			"namespace": "shutterstock",
+			"page[number]": 1,
+			"page[size]": 100,
+			"q": "portrait",
+			"queryTranslations": "true",
+			"filter[people_ethnicity]": "east_asian",
+			"filter[image_type]": "photo",
+			"filter[is_model_released]": "true"
+		},
+		"params_key": {
+			"ethnicity": "filter[people_ethnicity]",
+			"page": "page[number]",
+			"search_key": "q"
+		},
+		"results": {
+			"img_urls_1": "attributes",
+			"img_urls_2": "src",
+			"filename": "id",
+			"description_1": "attributes",
+			"description_2": "alt",
+			"img_type_1": "attributes",
+			"img_type_2": "imageType"
+		}
+	}
+]
