@@ -1,6 +1,9 @@
 # IMAGE SCRAPER CREATED BY NATHALIE DESCUSSE-BROWN AND UPDATED 16/01/21
 # TWO SPIDERS: SPD1 SCRAPES PHOTOS FROM WEBSITE SHUTTERSTOCK AND SAVES THEM LOCALLY
-# SP2 STORES URL AND DESCRIPTION IN SEPARATE CSV FILE
+# SP2 STORES URL AND DESCRIPTION IN SEPARATE CSV FILE 
+# ONE KNOWN ISSUE IS THAT SPD2 MAY NOT LIST SAME FILES AS IMAGES DOWNLOADED BY SPD1 AS 
+# WEBSITE DOESN'T APPEAR TO HAVE A SET ORDER FOR PICTURES. SO IF RUNNING BOTH, ENSURE ALL
+# PICTURES FOR SPECIFIC SEARCH ARE RETURNED.
 import scrapy
 import urllib3
 from imagescraper.items import Myspd2spiderItem
@@ -40,9 +43,7 @@ class Myspd1Spider(scrapy.Spider):
         jsonlist = []
 
         concatjson = '{"foo":' + script + "}"
-        #print(concatjson)   
         data = json.loads(concatjson)
-        #print('type(data)',type(data))
         for imagescraper in data["foo"]:
               images['image_urls'].append(imagescraper["url"])
 
