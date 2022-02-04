@@ -54,7 +54,7 @@ class GenericSpiderSpider(scrapy.Spider):
 
         timestamp = time.strftime('%Y%m%d%H%M%S',time.localtime())
         self.images_folder = HOME_DIR+config['APP']['IMAGES_FOLDER']+'/'+self.site+'_'+timestamp
-        
+
         #create the folder for the images to be downloaded
         os.makedirs(self.images_folder)
         
@@ -87,7 +87,7 @@ class GenericSpiderSpider(scrapy.Spider):
         data = json.loads(response.body)
         page_cnt=1
         
-        if self.site == 'unsplash' is None:
+        if self.site == 'unsplash':
             page_cnt =  data[self.site_data['page_cnt']]  
         else:
             page_cnt =  data[self.site_data['page_cnt_1']][self.site_data['page_cnt_2']][self.site_data['page_cnt_3']]
