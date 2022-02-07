@@ -33,6 +33,7 @@ class GenericSpiderSpider(scrapy.Spider):
     
     
     images_folder=''
+    folder = ''
 
     start_urls = []
     
@@ -42,7 +43,7 @@ class GenericSpiderSpider(scrapy.Spider):
         config.read('utils/crawler.ini')
         
         self.site = config['APP']['SITE']
-        self.allowed_domains = ['shutterstock']
+        self.allowed_domains = [self.site]
 
         configure_logging(install_root_handler=False)
 
@@ -54,10 +55,10 @@ class GenericSpiderSpider(scrapy.Spider):
 
         timestamp = time.strftime('%Y%m%d%H%M%S',time.localtime())
         self.images_folder = HOME_DIR+config['APP']['IMAGES_FOLDER']+'/'+self.site+'_'+timestamp
-
+        self.folder = timestamp
         #create the folder for the images to be downloaded
         os.makedirs(self.images_folder)
-        
+        print('self.images_folder: ' , self.images_folder)
         #create logs folder, if not existing
         if os.path.isdir(HOME_DIR+config['APP']['LOG_FOLDER']):
             pass
@@ -74,13 +75,13 @@ class GenericSpiderSpider(scrapy.Spider):
         with open("utils/site_data.json", encoding='utf-8', errors='ignore') as json_data:
             json_data = json.load(json_data, strict=False)
         for item in json_data:
-            print(item.get('site'))
+            #print(item.get('site'))
             if item.get('site')==self.site:
-                print("ano ba to: ",item['start_urls'])
+                #print("ano ba to: ",item['start_urls'])
                 self.start_urls.append(item['start_urls'] + urllib.parse.urlencode(item['params']))
                 self.params = item['params']
                 self.site_data = item
-                print("SITE DATA: ", self.site_data)
+                #print("SITE DATA: ", self.site_data)
 
     def parse(self, response):
         base_url = self.site_data['start_urls']
@@ -89,9 +90,10 @@ class GenericSpiderSpider(scrapy.Spider):
         
         if self.site == 'unsplash':
             page_cnt =  data[self.site_data['page_cnt']]  
+        elif self.site == 'istockphoto':
+            page_cnt =  data[self.site_data['page_cnt_1']][self.site_data['page_cnt_2']]
         else:
             page_cnt =  data[self.site_data['page_cnt_1']][self.site_data['page_cnt_2']][self.site_data['page_cnt_3']]
-
         print("number of pages: ", page_cnt)
         logging.info("number of pages: ", page_cnt)
         for page in range(1, page_cnt):
@@ -133,6 +135,6 @@ class GenericSpiderSpider(scrapy.Spider):
                 if self.site == 'shutterstock':
                     item['img_type'] =  result[self.site_data['results']['img_type_1']][self.site_data['results']['img_type_2']]
                 else:
-                    item['img_type'] =  result[self.site_data['results']][self.site_data['img_type']]
+                    item['img_type'] =  result[self.site_data['results']['img_type']]
                 urllib.request.urlretrieve(item['img_urls'], self.images_folder+'/'+item['filename']+'.jpg')
                 yield item

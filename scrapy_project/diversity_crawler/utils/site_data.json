@@ -8,15 +8,15 @@
 		"result_1":"gallery",
 		"result_2":"assets",
 		"params": {
-			"ethnicity": "eastasians",
+			"ethnicity": "eastasian",
 			"page": 1,
-			"phrase": "phrase",
+			"phrase": "people",
 			"sort": "newest"
 		},
 		"params_key": {
 			"ethnicity": "ethnicity",
 			"page": "page",
-			"search_key": "portrait"
+			"search_key": "phrase"
 		},
 		"results": {
 			"img_urls": "thumbUrl",

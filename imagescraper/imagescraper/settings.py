@@ -6,6 +6,9 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+# 
+# CREATED BY NATHALIE DESCUSSE-BROWN AND UPDATED 17/01/21
+# THE BELOW FILE SETS SETTINGS FOR SPIDERS SPD1 AND SPD2
 
 BOT_NAME = 'imagescraper'
 
@@ -13,40 +16,30 @@ SPIDER_MODULES = ['imagescraper.spiders']
 NEWSPIDER_MODULE = 'imagescraper.spiders'
 
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'scrapyunsplash (+http://www.yourdomain.com)'
+# THE USE AGENT BELOW ENABLES TO SCRAPE THE WEBSITE WITHOUT LOOKING IN A BOT
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
-# Desired file format
-FEED_FORMAT = "csv"
- 
-# Name of the file where data extracted is stored
-FEED_URI = "imagescraper.csv"
-
+# Desired file format: this is specified directly in the spider definition so not needed here
+#FEEDS = {"imagescraper_shutterstock.csv":{"format":"csv"}}
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
+ITEM_PIPELINES = {
+   'imagescraper.pipelines.Myspd1spiderPipeline': 300,
+   'imagescraper.pipelines.Myspd2spiderPipeline': 300,
+}              
 
-#Enabling use of proxies with rotating_proxies tool:
-# ROTATING_PROXY_LIST = [
-#     '45.128.220.22:59394'
-# ]
 
-# DOWNLOADER_MIDDLEWARES = {
-#     'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
-#     'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
-# }
+# The spider will use the proxies listed in the proxy-list to crawl the website. 
+ROTATING_PROXY_LIST_PATH = 'proxy-list2.txt'
 
-#Below is to be used with scrapy-proxies
-PROXY_LIST = 'proxy-list.txt'
-DOWNLOADER_MIDDLEWARES = { 
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
-    'scrapy_proxies.RandomProxy': 100, 
-    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110}
+DOWNLOADER_MIDDLEWARES = {
+ 'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+ 'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+ }
 
 RETRY_HTTP_CODES = [500, 503, 504, 400, 403, 404, 408]
 
@@ -56,10 +49,9 @@ RETRY_HTTP_CODES = [500, 503, 504, 400, 403, 404, 408]
 # 2 = Put a custom proxy to use in the settings
 PROXY_MODE = 0
 
-# Configure item pipelines
+# Configure item pipelines, this folder is where images will be saved locally
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-IMAGES_STORE = './imagescraper/spiders/images'
-
+IMAGES_STORE = './shutterstock_images'   
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
